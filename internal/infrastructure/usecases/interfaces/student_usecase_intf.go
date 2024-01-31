@@ -11,4 +11,5 @@ type IstudentUseCase interface {
 	DeleteStudentById(*requestmodels.IdReciever) error
 	EditStudentDetails(*requestmodels.NewStudent) (*responsemodels.StudentRes, error)
 	SearchByNameRollNo(*string) (*[]responsemodels.StudentRes, error)
+	GetStudentDetailsPagination(string,string) (*[]responsemodels.StudentRes, error)
 }

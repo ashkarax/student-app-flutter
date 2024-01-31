@@ -47,6 +47,21 @@ func (u *StudentHandler) GetStudentDetails(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+func (u *StudentHandler) GetStudentDetailsPagination(c *gin.Context) {
+
+	limit:=c.DefaultQuery("limit", "10")
+	offset:=c.DefaultQuery("offset","1")
+
+	studentData, err := u.StudentUsecase.GetStudentDetailsPagination(offset, limit)
+	if err != nil {
+		response := responsemodels.Responses(http.StatusBadRequest, "can't fetch students details", nil, err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	response := responsemodels.Responses(http.StatusOK, "students details fetched succesfully", studentData, nil)
+	c.JSON(http.StatusOK, response)
+}
+
 func (u *StudentHandler) DeleteStudentDetails(c *gin.Context) {
 	var id requestmodels.IdReciever
 	if err := c.ShouldBind(&id); err != nil {

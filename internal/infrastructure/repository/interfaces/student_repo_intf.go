@@ -11,4 +11,5 @@ type IstudentRepo interface{
 	DeleteStudentDetailById(*requestmodels.IdReciever) error
 	EditStudentDetailsById(*requestmodels.NewStudent) error
 	SearchByNameRollNo(*string)(*[]responsemodels.StudentRes,error)
+	GetStudentDetailsPagination(string,string) (*[]responsemodels.StudentRes,error)
 }
