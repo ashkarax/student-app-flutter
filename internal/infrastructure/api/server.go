@@ -17,15 +17,10 @@ func NewServerHttp(studentHandler *handlers.StudentHandler) *ServerHttp {
 
 	engin.POST("/", studentHandler.AddStudent)
 	engin.GET("/", studentHandler.GetStudentDetails)
+	engin.GET("/pagination", studentHandler.GetStudentDetailsPagination)
 	engin.DELETE("/", studentHandler.DeleteStudentDetails)
 	engin.PATCH("/", studentHandler.EditStudentDetails)
 	engin.GET("/search", studentHandler.SearchByNameRollNo)
-
-
-
-
-
-
 
 
 	//search with id/name to find a student
