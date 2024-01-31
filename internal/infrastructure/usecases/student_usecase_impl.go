@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	interfaceRepository "github.com/ashkarax/student_data_managing/internal/infrastructure/repository/interfaces"
 	interfaceUseCase "github.com/ashkarax/student_data_managing/internal/infrastructure/usecases/interfaces"
@@ -121,8 +122,12 @@ func (r *studentUsecase) GetStudentDetails() (*[]responsemodels.StudentRes, erro
 
 }
 
-func (r *studentUsecase) GetStudentDetailsPagination(offset , limit string) (*[]responsemodels.StudentRes, error) {
-	data, err := r.StudentRepo.GetStudentDetailsPagination(offset,limit)
+func (r *studentUsecase) GetStudentDetailsPagination(offset, limit string) (*[]responsemodels.StudentRes, error) {
+	offsetInt, _ := strconv.Atoi(offset)
+	limitInt, _ := strconv.Atoi(limit)
+
+	offset = strconv.Itoa((offsetInt - 1) * limitInt)
+	data, err := r.StudentRepo.GetStudentDetailsPagination(offset, limit)
 	if err != nil {
 		return data, err
 	}
@@ -242,7 +247,7 @@ func (r *studentUsecase) EditStudentDetails(studentData *requestmodels.NewStuden
 	return &studentResp, nil
 }
 
-func (r *studentUsecase) SearchByNameRollNo(query *string)(*[]responsemodels.StudentRes,error){
+func (r *studentUsecase) SearchByNameRollNo(query *string) (*[]responsemodels.StudentRes, error) {
 	data, err := r.StudentRepo.SearchByNameRollNo(query)
 	if err != nil {
 		return data, err
@@ -251,4 +256,3 @@ func (r *studentUsecase) SearchByNameRollNo(query *string)(*[]responsemodels.Stu
 	return data, nil
 
 }
-

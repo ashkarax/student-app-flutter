@@ -43,7 +43,7 @@ func (d *studentRepository) GetStudentDetails() (*[]responsemodels.StudentRes, e
 func (d *studentRepository) GetStudentDetailsPagination(offset , limit string) (*[]responsemodels.StudentRes, error) {
 	var studentDetails []responsemodels.StudentRes
 
-	query := "SELECT * FROM students order by names limit $1 offset $2"
+	query := "SELECT * FROM students order by name limit $1 offset $2"
 	err := d.DB.Raw(query, limit, offset).Scan(&studentDetails)
 	if err.Error != nil {
 		return &studentDetails, err.Error
