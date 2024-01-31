@@ -121,6 +121,16 @@ func (r *studentUsecase) GetStudentDetails() (*[]responsemodels.StudentRes, erro
 
 }
 
+func (r *studentUsecase) GetStudentDetailsPagination(offset , limit string) (*[]responsemodels.StudentRes, error) {
+	data, err := r.StudentRepo.GetStudentDetailsPagination(offset,limit)
+	if err != nil {
+		return data, err
+	}
+
+	return data, nil
+
+}
+
 func (r *studentUsecase) DeleteStudentById(id *requestmodels.IdReciever) error {
 
 	validate := validator.New(validator.WithRequiredStructEnabled())
@@ -143,7 +153,7 @@ func (r *studentUsecase) EditStudentDetails(studentData *requestmodels.NewStuden
 	var studentResp responsemodels.StudentRes
 	BucketFolder := "student-app-images/"
 
-	if studentData.Id==0{
+	if studentData.Id == 0 {
 		return &studentResp, errors.New("enter student id")
 	}
 
