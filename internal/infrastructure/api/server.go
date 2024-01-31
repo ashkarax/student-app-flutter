@@ -16,9 +16,19 @@ func NewServerHttp(studentHandler *handlers.StudentHandler) *ServerHttp {
 	engin := gin.Default()
 
 	engin.POST("/", studentHandler.AddStudent)
-	//get request to output data
+	engin.GET("/", studentHandler.GetStudentDetails)
+	engin.DELETE("/", studentHandler.DeleteStudentDetails)
+	engin.PATCH("/", studentHandler.EditStudentDetails)
+	engin.GET("/search", studentHandler.SearchByNameRollNo)
+
+
+
+
+
+
+
+
 	//search with id/name to find a student
-	//delete student records
 	//edit student records
 
 	return &ServerHttp{engin: engin}

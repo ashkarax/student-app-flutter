@@ -3,6 +3,7 @@ package requestmodels
 import "mime/multipart"
 
 type NewStudent struct {
+	Id          uint                  `form:"id"`
 	Name        string                `form:"name" validate:"required,gte=2"`
 	ROllNo      uint                  `form:"roll_no" validate:"required"`
 	Age         uint                  `form:"age" validate:"required"`
@@ -10,5 +11,5 @@ type NewStudent struct {
 	PhoneNumber string                `form:"phone" validate:"required,e164"`
 	ImageFile   *multipart.FileHeader `form:"image" binding:"required"`
 
-	ImageUrl string        
+	ImageUrl string
 }

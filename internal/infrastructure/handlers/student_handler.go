@@ -24,7 +24,7 @@ func (u *StudentHandler) AddStudent(c *gin.Context) {
 		return
 	}
 
-	validationRes,err := u.StudentUsecase.AddStudent(&studentData)
+	validationRes, err := u.StudentUsecase.AddStudent(&studentData)
 	if err != nil {
 		response := responsemodels.Responses(http.StatusBadRequest, "can't add Student", validationRes, err.Error())
 		c.JSON(http.StatusBadRequest, response)
@@ -32,5 +32,71 @@ func (u *StudentHandler) AddStudent(c *gin.Context) {
 	}
 
 	response := responsemodels.Responses(http.StatusOK, "student added succesfully", nil, nil)
+	c.JSON(http.StatusOK, response)
+}
+
+func (u *StudentHandler) GetStudentDetails(c *gin.Context) {
+
+	studentData, err := u.StudentUsecase.GetStudentDetails()
+	if err != nil {
+		response := responsemodels.Responses(http.StatusBadRequest, "can't fetch students details", nil, err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	response := responsemodels.Responses(http.StatusOK, "students details fetched succesfully", studentData, nil)
+	c.JSON(http.StatusOK, response)
+}
+
+func (u *StudentHandler) DeleteStudentDetails(c *gin.Context) {
+	var id requestmodels.IdReciever
+	if err := c.ShouldBind(&id); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	err := u.StudentUsecase.DeleteStudentById(&id)
+	if err != nil {
+		response := responsemodels.Responses(http.StatusBadRequest, "can't delete Student", nil, err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := responsemodels.Responses(http.StatusOK, "student deleted succesfully", nil, nil)
+	c.JSON(http.StatusOK, response)
+}
+
+func (u *StudentHandler) EditStudentDetails(c *gin.Context) {
+	var studentData requestmodels.NewStudent
+	if err := c.ShouldBind(&studentData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	validationRes, err := u.StudentUsecase.EditStudentDetails(&studentData)
+	if err != nil {
+		response := responsemodels.Responses(http.StatusBadRequest, "can't edit Student Details", validationRes, err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := responsemodels.Responses(http.StatusOK, "student details edited succesfully", nil, nil)
+	c.JSON(http.StatusOK, response)
+}
+
+func (u *StudentHandler) SearchByNameRollNo(c *gin.Context) {
+	query := c.Query("q")
+	if query == "" {
+		response := responsemodels.Responses(http.StatusBadRequest, "can't find Student Details", nil, "no query parameters found")
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// studData, err := u.StudentUsecase.SearchByNameRollNo(&query)
+	// if err != nil {
+	// 	response := responsemodels.Responses(http.StatusBadRequest, "can't find Student Details", nil, err.Error())
+	// 	c.JSON(http.StatusBadRequest, response)
+	// 	return
+	// }
+
+	response := responsemodels.Responses(http.StatusOK, "student details found succesfully", nil, nil)
 	c.JSON(http.StatusOK, response)
 }
