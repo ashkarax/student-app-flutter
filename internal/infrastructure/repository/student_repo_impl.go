@@ -52,15 +52,33 @@ func (d *studentRepository) DeleteStudentDetailById(id *requestmodels.IdReciever
 	return nil
 }
 
-func (d *studentRepository) EditStudentDetailsById(studentData *requestmodels.NewStudent) error{
+func (d *studentRepository) EditStudentDetailsById(studentData *requestmodels.NewStudent) error {
 
 	query := "UPDATE students SET name=?,roll_no=?,age=?,department=?,phone_number=?,image_url=?  WHERE id=?"
-	err := d.DB.Exec(query, studentData.Name, studentData.ROllNo, studentData.Age, studentData.Department, studentData.PhoneNumber, studentData.ImageUrl,studentData.Id)
+	err := d.DB.Exec(query, studentData.Name, studentData.ROllNo, studentData.Age, studentData.Department, studentData.PhoneNumber, studentData.ImageUrl, studentData.Id)
 	if err.Error != nil {
 		return err.Error
 	}
-	if err.RowsAffected==0{
+	if err.RowsAffected == 0 {
 		return errors.New(fmt.Sprintf("no student with id=%d found,enter a valid student id", studentData.Id))
 	}
 	return nil
+}
+
+func (d *studentRepository) SearchByNameRollNo(q *string) (*[]responsemodels.StudentRes, error) {
+	var studentDetails []responsemodels.StudentRes
+
+	//Error code
+	// query := `SELECT * FROM students WHERE name ILIKE $1 OR rollno = $2`
+	// err := d.DB.Raw(query, "%"+*q+"%", *q).Scan(&studentDetails)
+	//outputted_error:invalid input syntax for type bigint: "ayoob" (SQLSTATE 22P02)
+	// /////////////////////////////////////////////////////////////////////////////////
+
+	query := `SELECT * FROM students WHERE name ILIKE $1 OR roll_no::text ILIKE $2`
+	err := d.DB.Raw(query, "%"+*q+"%", "%"+*q+"%").Scan(&studentDetails)
+	if err.Error != nil {
+		return &studentDetails, err.Error
+	}
+
+	return &studentDetails, nil
 }

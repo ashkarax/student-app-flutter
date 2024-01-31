@@ -231,3 +231,14 @@ func (r *studentUsecase) EditStudentDetails(studentData *requestmodels.NewStuden
 
 	return &studentResp, nil
 }
+
+func (r *studentUsecase) SearchByNameRollNo(query *string)(*[]responsemodels.StudentRes,error){
+	data, err := r.StudentRepo.SearchByNameRollNo(query)
+	if err != nil {
+		return data, err
+	}
+
+	return data, nil
+
+}
+
