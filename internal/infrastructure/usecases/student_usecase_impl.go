@@ -43,8 +43,6 @@ func (r *studentUsecase) AddStudent(studentData *requestmodels.NewStudent) (*res
 					studentResp.Department = "should be a valid department "
 				case "PhoneNumber":
 					studentResp.PhoneNumber = "should include the country code also."
-				case "ImageFile":
-					studentResp.ImageFile = "no image found"
 				}
 			}
 		}
@@ -178,8 +176,7 @@ func (r *studentUsecase) EditStudentDetails(studentData *requestmodels.NewStuden
 					studentResp.Department = "should be a valid department "
 				case "PhoneNumber":
 					studentResp.PhoneNumber = "should include the country code also."
-				case "ImageFile":
-					studentResp.ImageFile = "no image found"
+
 				}
 			}
 		}
