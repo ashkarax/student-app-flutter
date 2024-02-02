@@ -151,11 +151,9 @@ func (r *studentUsecase) DeleteStudentById(id *requestmodels.IdReciever) error {
 
 }
 
-func (r *studentUsecase) EditStudentDetails(studentData *requestmodels.NewStudent) (*responsemodels.StudentRes, error) {
+func (r *studentUsecase) EditStudentDetails(studentData *requestmodels.EditStudent) (*responsemodels.StudentRes, error) {
 
 	var studentResp responsemodels.StudentRes
-	BucketFolder := "student-app-images/"
-
 	if studentData.Id == 0 {
 		return &studentResp, errors.New("enter student id")
 	}
@@ -182,59 +180,6 @@ func (r *studentUsecase) EditStudentDetails(studentData *requestmodels.NewStuden
 		}
 		return &studentResp, errors.New("did't fullfill the validation conditions ")
 	}
-
-	if studentData.ImageFile.Size > 1*1024*1024 { // 1 MB limit
-		return &studentResp, errors.New("image size exceeds the limit (1MB)")
-	}
-
-	// Validate file types
-	allowedTypes := map[string]struct{}{
-		"image/jpeg": {},
-		"image/png":  {},
-		"image/gif":  {},
-	}
-
-	file, err := studentData.ImageFile.Open()
-	if err != nil {
-		return &studentResp, err
-	}
-	defer file.Close()
-
-	// Read the first 512 bytes to determine the content type
-	buffer := make([]byte, 512)
-	_, err = file.Read(buffer)
-	if err != nil {
-		return &studentResp, err
-	}
-
-	// Reset the file position after reading
-	_, err = file.Seek(0, 0)
-	if err != nil {
-		return &studentResp, err
-	}
-
-	// Get the content type based on the file content
-	contentType := http.DetectContentType(buffer)
-
-	// Check if the content type is allowed
-	if _, ok := allowedTypes[contentType]; !ok {
-		return &studentResp, errors.New("unsupported file type,should be a jpeg,png or gif")
-	}
-
-	sess, errInit := aws.AWSSessionInitializer()
-	if errInit != nil {
-		fmt.Println(errInit)
-		return &studentResp, errInit
-	}
-	imageURL, err := aws.AWSS3ImageUploader(studentData.ImageFile, sess, &BucketFolder)
-	if err != nil {
-		fmt.Printf("Error uploading image  %v\n", err)
-		return &studentResp, err
-	}
-
-	studentData.ImageUrl = *imageURL
-
-	fmt.Println(studentData)
 
 	errN := r.StudentRepo.EditStudentDetailsById(studentData)
 	if errN != nil {
