@@ -32,6 +32,7 @@ func (d *studentRepository) GetStudentDetails() (*[]responsemodels.StudentRes, e
 	var studentDetails []responsemodels.StudentRes
 
 	query := "SELECT * FROM students ORDER BY id DESC"
+
 	err := d.DB.Raw(query).Scan(&studentDetails)
 	if err.Error != nil {
 		return &studentDetails, err.Error
