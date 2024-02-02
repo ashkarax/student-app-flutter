@@ -7,5 +7,5 @@ type StudentRes struct {
 	Age         string `json:"age,omitempty" `
 	Department  string `json:"department,omitempty" `
 	PhoneNumber string `json:"phone,omitempty" `
-	ImageFile   string `json:"image,omitempty" `
+	ImageUrl   string `json:"image,omitempty" `
 }

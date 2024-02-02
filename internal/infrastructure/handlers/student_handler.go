@@ -105,13 +105,13 @@ func (u *StudentHandler) SearchByNameRollNo(c *gin.Context) {
 		return
 	}
 
-	// studData, err := u.StudentUsecase.SearchByNameRollNo(&query)
-	// if err != nil {
-	// 	response := responsemodels.Responses(http.StatusBadRequest, "can't find Student Details", nil, err.Error())
-	// 	c.JSON(http.StatusBadRequest, response)
-	// 	return
-	// }
+	studData, err := u.StudentUsecase.SearchByNameRollNo(&query)
+	if err != nil {
+		response := responsemodels.Responses(http.StatusBadRequest, "can't find Student Details", nil, err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
 
-	response := responsemodels.Responses(http.StatusOK, "student details found succesfully", nil, nil)
+	response := responsemodels.Responses(http.StatusOK, "student details found succesfully", studData, nil)
 	c.JSON(http.StatusOK, response)
 }

@@ -3,10 +3,17 @@ package server
 import (
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/ashkarax/student_data_managing/internal/infrastructure/handlers"
 	"github.com/gin-gonic/gin"
 )
+
+var validAPIKeys = map[string]bool{
+	"apikey@ashkar": true,
+	"apikey@ayoob":  true,
+	"apikey@vajid":  true,
+}
 
 type ServerHttp struct {
 	engin *gin.Engine
@@ -14,6 +21,17 @@ type ServerHttp struct {
 
 func NewServerHttp(studentHandler *handlers.StudentHandler) *ServerHttp {
 	engin := gin.Default()
+
+	// Middleware to validate API key
+	engin.Use(func(c *gin.Context) {
+		apiKey := c.GetHeader("X-API-Key")
+		if !validAPIKeys[apiKey] {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid API key"})
+			c.Abort()
+			return
+		}
+		c.Next()
+	})
 
 	engin.POST("/", studentHandler.AddStudent)
 	engin.GET("/", studentHandler.GetStudentDetails)
