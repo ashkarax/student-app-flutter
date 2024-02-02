@@ -9,7 +9,7 @@ type IstudentRepo interface{
 	AddStudent(*requestmodels.NewStudent) error
 	GetStudentDetails() (*[]responsemodels.StudentRes,error)
 	DeleteStudentDetailById(*requestmodels.IdReciever) error
-	EditStudentDetailsById(*requestmodels.NewStudent) error
+	EditStudentDetailsById(*requestmodels.EditStudent) error
 	SearchByNameRollNo(*string)(*[]responsemodels.StudentRes,error)
 	GetStudentDetailsPagination(string,string) (*[]responsemodels.StudentRes,error)
 }

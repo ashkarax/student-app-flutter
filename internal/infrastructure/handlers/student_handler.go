@@ -80,7 +80,7 @@ func (u *StudentHandler) DeleteStudentDetails(c *gin.Context) {
 }
 
 func (u *StudentHandler) EditStudentDetails(c *gin.Context) {
-	var studentData requestmodels.NewStudent
+	var studentData requestmodels.EditStudent
 	if err := c.ShouldBind(&studentData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

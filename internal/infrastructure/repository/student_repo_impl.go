@@ -40,7 +40,7 @@ func (d *studentRepository) GetStudentDetails() (*[]responsemodels.StudentRes, e
 	return &studentDetails, nil
 }
 
-func (d *studentRepository) GetStudentDetailsPagination(offset , limit string) (*[]responsemodels.StudentRes, error) {
+func (d *studentRepository) GetStudentDetailsPagination(offset, limit string) (*[]responsemodels.StudentRes, error) {
 	var studentDetails []responsemodels.StudentRes
 
 	query := "SELECT * FROM students order by name limit $1 offset $2"
@@ -64,10 +64,10 @@ func (d *studentRepository) DeleteStudentDetailById(id *requestmodels.IdReciever
 	return nil
 }
 
-func (d *studentRepository) EditStudentDetailsById(studentData *requestmodels.NewStudent) error {
+func (d *studentRepository) EditStudentDetailsById(studentData *requestmodels.EditStudent) error {
 
-	query := "UPDATE students SET name=?,roll_no=?,age=?,department=?,phone_number=?,image_url=?  WHERE id=?"
-	err := d.DB.Exec(query, studentData.Name, studentData.ROllNo, studentData.Age, studentData.Department, studentData.PhoneNumber, studentData.ImageUrl, studentData.Id)
+	query := "UPDATE students SET name=?,roll_no=?,age=?,department=?,phone_number=?  WHERE id=?"
+	err := d.DB.Exec(query, studentData.Name, studentData.RollNo, studentData.Age, studentData.Department, studentData.PhoneNumber, studentData.Id)
 	if err.Error != nil {
 		return err.Error
 	}
