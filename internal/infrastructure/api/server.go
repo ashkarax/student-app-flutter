@@ -10,9 +10,7 @@ import (
 )
 
 var validAPIKeys = map[string]bool{
-	"apikey@ashkar": true,
-	"apikey@ayoob":  true,
-	"apikey@vajid":  true,
+	"apikey@studentapp": true,
 }
 
 type ServerHttp struct {
