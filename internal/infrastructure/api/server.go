@@ -46,7 +46,7 @@ func NewServerHttp(studentHandler *handlers.StudentHandler) *ServerHttp {
 }
 
 func (server *ServerHttp) Start() {
-	err := server.engin.Run(":8082")
+	err := server.engin.Run(":8085")
 	if err != nil {
 		log.Fatal("gin engin couldn't start")
 	}
