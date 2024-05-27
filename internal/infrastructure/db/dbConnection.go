@@ -19,12 +19,13 @@ func ConnectDatabase(config config.DataBase) (*gorm.DB, error) {
 		},
 	})
 	if dberr != nil {
-		return DB, nil
+		return nil, dberr
 	}
 
 	// Table Creation
 	if err := DB.AutoMigrate(&domain.Student{}); err != nil {
-		return DB, err
+		fmt.Println("----------***********----------", err)
+		return nil, err
 	}
 
 	return DB, nil
