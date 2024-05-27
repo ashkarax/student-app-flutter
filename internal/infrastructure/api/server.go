@@ -20,7 +20,9 @@ func NewServerHttp(studentHandler *handlers.StudentHandler, ApiKey *config.Keys)
 	// Middleware to validate API key
 	engin.Use(func(c *gin.Context) {
 		apiKey := c.GetHeader("X-API-Key")
+
 		if apiKey != ApiKey.ApiKey {
+			fmt.Println("condition is true,api keys are not matching")
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid API key"})
 			c.Abort()
 			return

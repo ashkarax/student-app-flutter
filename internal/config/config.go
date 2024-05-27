@@ -49,6 +49,10 @@ func LoadConfig() (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
+	err = viper.Unmarshal(&keys)
+	if err != nil {
+		return nil, err
+	}
 
 	config := Config{DB: db, AwsS3: awsS3, ApiKey: keys}
 	return &config, nil
