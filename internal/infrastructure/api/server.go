@@ -5,25 +5,22 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/ashkarax/student_data_managing/internal/config"
 	"github.com/ashkarax/student_data_managing/internal/infrastructure/handlers"
 	"github.com/gin-gonic/gin"
 )
-
-var validAPIKeys = map[string]bool{
-	"apikey@studentapp": true,
-}
 
 type ServerHttp struct {
 	engin *gin.Engine
 }
 
-func NewServerHttp(studentHandler *handlers.StudentHandler) *ServerHttp {
+func NewServerHttp(studentHandler *handlers.StudentHandler, ApiKey *config.Keys) *ServerHttp {
 	engin := gin.Default()
 
 	// Middleware to validate API key
 	engin.Use(func(c *gin.Context) {
 		apiKey := c.GetHeader("X-API-Key")
-		if !validAPIKeys[apiKey] {
+		if apiKey != ApiKey.ApiKey {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid API key"})
 			c.Abort()
 			return
@@ -37,7 +34,6 @@ func NewServerHttp(studentHandler *handlers.StudentHandler) *ServerHttp {
 	engin.DELETE("/", studentHandler.DeleteStudentDetails)
 	engin.PATCH("/", studentHandler.EditStudentDetails)
 	engin.GET("/search", studentHandler.SearchByNameRollNo)
-
 
 	return &ServerHttp{engin: engin}
 }

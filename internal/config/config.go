@@ -2,6 +2,10 @@ package config
 
 import "github.com/spf13/viper"
 
+type Keys struct {
+	ApiKey string `mapstructure:"API_KEY"`
+}
+
 type DataBase struct {
 	DBUser     string `mapstructure:"DBUSER"`
 	DBName     string `mapstructure:"DBNAME"`
@@ -18,13 +22,15 @@ type AWS struct {
 }
 
 type Config struct {
-	DB    DataBase
-	AwsS3 AWS
+	DB     DataBase
+	AwsS3  AWS
+	ApiKey Keys
 }
 
 func LoadConfig() (*Config, error) {
 	var db DataBase
 	var awsS3 AWS
+	var keys Keys
 
 	viper.AddConfigPath("./")
 	viper.SetConfigFile(".env")
@@ -44,6 +50,6 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
-	config := Config{DB: db, AwsS3: awsS3}
+	config := Config{DB: db, AwsS3: awsS3, ApiKey: keys}
 	return &config, nil
 }

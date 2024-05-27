@@ -26,7 +26,7 @@ func InitializeApi(config *config.Config) (*server.ServerHttp, error) {
 	studentUsecase := usecases.NewStudentUseCase(studentRepository)
 	studentHandler := handlers.NewStudentHandler(studentUsecase)
 
-	serverHttp := server.NewServerHttp(studentHandler)
+	serverHttp := server.NewServerHttp(studentHandler, &config.ApiKey)
 
 	return serverHttp, nil
 }
