@@ -1,0 +1,38 @@
+version: '3.9'
+name: studentapp
+
+services:
+  postgresdb:
+    image: postgres:14
+    restart:  always
+    container_name: studentapp_postgres_db
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - ciao_net_bridge
+    volumes:
+      - project-volume:/var/lib/postgresql_studentapp/data
+    hostname: postgresdb
+
+  studentapp:
+    image: studentapp:final
+    build: .
+    restart: unless-stopped
+    container_name: studentapp_container
+    depends_on:
+      - postgresdb
+    networks:
+      - ciao_net_bridge
+    ports:
+      - 8085:8085
+    environment:
+      - DBHOST=postgresdb
+      - DBPASSWORD=postgres
+
+
+networks:
+  ciao_net_bridge:
+    driver: bridge
+volumes:
+  project-volume:
+  

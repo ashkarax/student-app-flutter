@@ -39,9 +39,6 @@ func NewServerHttp(studentHandler *handlers.StudentHandler) *ServerHttp {
 	engin.GET("/search", studentHandler.SearchByNameRollNo)
 
 
-	//search with id/name to find a student
-	//edit student records
-
 	return &ServerHttp{engin: engin}
 }
 

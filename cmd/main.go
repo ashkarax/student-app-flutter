@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/ashkarax/student_data_managing/internal/config"
@@ -19,4 +20,6 @@ func main() {
 	}
 
 	server.Start()
+	fmt.Println("server started on port:8085")
+
 }
